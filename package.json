@@ -1,0 +1,14 @@
+{
+  "name": "demo-ts-react-app",
+  "version": "1.0.0",
+  "description": "Демонстрационное react приложение",
+  "main": "index.js",
+  "author": "gleb.mihalkov",
+  "license": "MIT",
+  "scripts": {},
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.5"
+  }
+}
