@@ -1,11 +1,10 @@
 import { existsSync } from 'fs';
-import { getSrcPath } from './getSrcPath';
-import { getEntryExtensions } from './getEntryExtensions';
+import { getSrcPath, getExtensions } from '../common';
 
 /**
  * Возвращает путь к точке сборки проекта.
  */
 export const getEntryPath = () =>
-  getEntryExtensions()
+  getExtensions()
     .map((extension) => getSrcPath(`index${extension}`))
     .find((path) => existsSync(path));

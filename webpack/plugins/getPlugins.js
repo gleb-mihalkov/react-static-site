@@ -3,6 +3,6 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 /**
  * Возвращает список плагинов webpack.
  */
-export const getConfigPlugins = () => [
+export const getPlugins = () => [
   new CleanWebpackPlugin(),
 ];

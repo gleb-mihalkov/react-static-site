@@ -1,10 +1,11 @@
-import { getProjectName } from './getProjectName';
+import { getProjectName } from '../common';
+
 import { getEntryPath } from './getEntryPath';
 
 /**
  * Возвращает описание точки входа проекта в конфигурации.
  */
-export const getConfigEntry = () => {
+export const getEntry = () => {
   const projectName = getProjectName();
   const entryPath = getEntryPath();
 
