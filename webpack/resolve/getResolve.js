@@ -1,3 +1,5 @@
+import { TsConfigPathsPlugin } from 'awesome-typescript-loader';
+
 import { getExtensions } from '../common';
 
 /**
@@ -5,5 +7,12 @@ import { getExtensions } from '../common';
  */
 export const getResolve = () => {
   const extensions = getExtensions();
-  return { extensions };
+
+  return {
+    extensions,
+
+    plugins: [
+      new TsConfigPathsPlugin(),
+    ],
+  };
 };

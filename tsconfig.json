@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "esnext",
+      "dom",
+    ],
+    "module": "esnext",
+    "target": "es5",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": [ "./*" ],
+    }
+  }
+}

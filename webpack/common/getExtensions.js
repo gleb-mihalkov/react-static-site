@@ -1,4 +1,4 @@
 /**
  * Возвращает список допустимых расширений для точки сборки модуля.
  */
-export const getExtensions = () => ['.js'];
+export const getExtensions = () => ['.ts', '.tsx', '.js', '.jsx'];
