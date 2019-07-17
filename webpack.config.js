@@ -2,6 +2,8 @@ const { resolve } = require('path');
 const { existsSync } = require('fs');
 const { TsConfigPathsPlugin, CheckerPlugin } = require('awesome-typescript-loader');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { DefinePlugin } = require('webpack');
 const package = require('./package.json');
 
 /**
@@ -83,6 +85,14 @@ module.exports = (cliEnv, cliArgs) => {
     plugins: list(
       new CleanWebpackPlugin(),
       new CheckerPlugin(),
+
+      new HtmlWebpackPlugin({
+        template: src('index.html'),
+      }),
+
+      new DefinePlugin({
+        'process.env': JSON.stringify(env),
+      }),
     ),
 
     module: {
