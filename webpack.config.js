@@ -25,6 +25,12 @@ const src = (...args) => root('src', ...args);
 const dst = (...args) => root('build', ...args);
 
 /**
+ * Resolves the path by base URL pathname.
+ * @param  {...any} args Components of the path.
+ */
+const url = (...args) => `/${root(...args).substr(root().length)}`;
+
+/**
  * Returns the list of arguments without the empties.
  * @param  {...any} args List of items.
  */
@@ -62,6 +68,12 @@ module.exports = (cliEnv, cliArgs) => {
    */
   const entry = extensions.map(item => src(`index${item}`)).find(existsSync);
 
+  /**
+   * Base relative URL of application.
+   */
+  const baseUrl = url();
+  env.BASE_URL = baseUrl;
+
   return {
     mode,
 
@@ -72,6 +84,7 @@ module.exports = (cliEnv, cliArgs) => {
     output: {
       filename: '[name].[hash].js',
       path: dst(),
+      publicPath: baseUrl,
     },
 
     resolve: {
@@ -86,12 +99,12 @@ module.exports = (cliEnv, cliArgs) => {
       new CleanWebpackPlugin(),
       new CheckerPlugin(),
 
-      new HtmlWebpackPlugin({
-        template: src('index.html'),
-      }),
-
       new DefinePlugin({
         'process.env': JSON.stringify(env),
+      }),
+
+      new HtmlWebpackPlugin({
+        template: src('index.ejs'),
       }),
     ),
 
