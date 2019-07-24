@@ -4,6 +4,8 @@ const { TsConfigPathsPlugin, CheckerPlugin } = require('awesome-typescript-loade
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+const TerserPlugin  = require('terser-webpack-plugin');
 const { DefinePlugin, HotModuleReplacementPlugin } = require('webpack');
 const flat = require('array-flatten');
 const package = require('./package.json');
@@ -127,6 +129,10 @@ module.exports = (cliEnv, cliArgs) => {
         template: src('index.ejs'),
       }),
 
+      new MomentLocalesPlugin({
+        localesToKeep: ['ru'],
+      }),
+
       isAnalyze && [
         new BundleAnalyzerPlugin(),
       ],
@@ -143,6 +149,17 @@ module.exports = (cliEnv, cliArgs) => {
         automaticNameDelimiter: '_',
         chunks: 'all',
       },
+      minimizer: [
+        new TerserPlugin({
+          parallel: true,
+          cache: true,
+          terserOptions: {
+            output: {
+              comments: false,
+            },
+          }
+        }),
+      ],
     },
 
     module: {
