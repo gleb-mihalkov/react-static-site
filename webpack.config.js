@@ -8,7 +8,6 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const TerserPlugin  = require('terser-webpack-plugin');
 const { DefinePlugin, HotModuleReplacementPlugin } = require('webpack');
 const flat = require('array-flatten');
-const package = require('./package.json');
 
 /**
  * Resolves the path by project root.
@@ -68,11 +67,6 @@ module.exports = (cliEnv, cliArgs) => {
   const isDev = mode === 'development';
 
   /**
-   * Project name.
-   */
-  const name = package.name;
-
-  /**
    * Avalible extensions of entry point of modules.
    */
   const extensions = ['.tsx', '.ts', '.jsx', '.js'];
@@ -101,7 +95,7 @@ module.exports = (cliEnv, cliArgs) => {
     },
 
     entry: {
-      [name]: entry,
+      main: entry,
     },
 
     output: {
