@@ -140,7 +140,7 @@ module.exports = (cliEnv, cliArgs) => {
 
     optimization: {
       splitChunks: {
-        automaticNameDelimiter: '_',
+        automaticNameDelimiter: '-',
         chunks: 'all',
       },
       minimizer: [
@@ -163,6 +163,9 @@ module.exports = (cliEnv, cliArgs) => {
           loader: 'awesome-typescript-loader',
           options: {
             useCache: true,
+            getCustomTransformers: isDev
+              ? root('webpack.dev-ts-transformers.js')
+              : () => ({}),
           },
         },
       ),
