@@ -1,4 +1,9 @@
-import { Foo } from 'common';
+import { createElement } from 'react';
+import { render } from 'react-dom';
 
-const foo = new Foo();
-foo.foo();
+import { Sample } from 'common';
+
+render(
+  createElement(Sample),
+  document.getElementById('root'),
+);

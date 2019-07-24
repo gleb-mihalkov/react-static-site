@@ -103,7 +103,7 @@ module.exports = (cliEnv, cliArgs) => {
     },
 
     output: {
-      filename: isDev ? '[name].js' : '[name].[hash].js',
+      filename: isDev ? '[name].js' : '[name].[chunkhash].js',
       path: dst(),
       publicPath: baseUrl,
     },
@@ -138,10 +138,17 @@ module.exports = (cliEnv, cliArgs) => {
       ],
     ),
 
+    optimization: {
+      splitChunks: {
+        automaticNameDelimiter: '_',
+        chunks: 'all',
+      },
+    },
+
     module: {
       rules: list(
         {
-          test: /\.ts$/,
+          test: /\.tsx?$/,
           loader: 'awesome-typescript-loader',
           options: {
             useCache: true,
