@@ -3,7 +3,8 @@ const { existsSync } = require('fs');
 const { TsConfigPathsPlugin, CheckerPlugin } = require('awesome-typescript-loader');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { DefinePlugin } = require('webpack');
+const { DefinePlugin, HotModuleReplacementPlugin } = require('webpack');
+const flat = require('array-flatten');
 const package = require('./package.json');
 
 /**
@@ -34,7 +35,7 @@ const url = (...args) => `/${root(...args).substr(root().length)}`;
  * Returns the list of arguments without the empties.
  * @param  {...any} args List of items.
  */
-const list = (...args) => args.filter(Boolean);
+const list = (...args) => flat(args).filter(Boolean);
 
 /**
  * Returns webpack configuration object.
@@ -77,14 +78,28 @@ module.exports = (cliEnv, cliArgs) => {
   return {
     mode,
 
+    devtool: mode === 'development'
+      ? 'source-map'
+      : false,
+
+    devServer: {
+      host: 'localhost',
+      port: 8080,
+      open: true,
+      hot: true,
+    },
+
     entry: {
       [name]: entry,
     },
 
     output: {
-      filename: '[name].[hash].js',
-      path: dst(),
       publicPath: baseUrl,
+      path: dst(),
+
+      filename: mode === 'production'
+        ? '[name].[hash].js'
+        : '[name].js',
     },
 
     resolve: {
@@ -96,7 +111,6 @@ module.exports = (cliEnv, cliArgs) => {
     },
 
     plugins: list(
-      new CleanWebpackPlugin(),
       new CheckerPlugin(),
 
       new DefinePlugin({
@@ -106,6 +120,14 @@ module.exports = (cliEnv, cliArgs) => {
       new HtmlWebpackPlugin({
         template: src('index.ejs'),
       }),
+
+      mode === 'development' && [
+        new HotModuleReplacementPlugin(),
+      ],
+
+      mode === 'production' && [
+        new CleanWebpackPlugin(),
+      ],
     ),
 
     module: {
