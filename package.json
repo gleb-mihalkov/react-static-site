@@ -6,6 +6,7 @@
   "author": "gleb.mihalkov",
   "license": "MIT",
   "scripts": {
+    "analyze": "cross-env NODE_ENV=production webpack --analyze",
     "build": "cross-env NODE_ENV=production webpack",
     "start": "cross-env NODE_ENV=development webpack-dev-server"
   },
@@ -17,6 +18,7 @@
     "html-webpack-plugin": "^3.2.0",
     "typescript": "^3.5.3",
     "webpack": "^4.35.3",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.5",
     "webpack-dev-server": "^3.7.2"
   }

@@ -3,6 +3,7 @@ const { existsSync } = require('fs');
 const { TsConfigPathsPlugin, CheckerPlugin } = require('awesome-typescript-loader');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { DefinePlugin, HotModuleReplacementPlugin } = require('webpack');
 const flat = require('array-flatten');
 const package = require('./package.json');
@@ -55,6 +56,16 @@ module.exports = (cliEnv, cliArgs) => {
   env.NODE_ENV = mode;
 
   /**
+   * True if webpack works in bundle analyze mode.
+   */
+  const isAnalyze = cliArgs.analyze;
+
+  /**
+   * True if webpack works in development mode.
+   */
+  const isDev = mode === 'development';
+
+  /**
    * Project name.
    */
   const name = package.name;
@@ -78,9 +89,7 @@ module.exports = (cliEnv, cliArgs) => {
   return {
     mode,
 
-    devtool: mode === 'development'
-      ? 'source-map'
-      : false,
+    devtool: isDev && 'source-map',
 
     devServer: {
       host: 'localhost',
@@ -94,12 +103,9 @@ module.exports = (cliEnv, cliArgs) => {
     },
 
     output: {
-      publicPath: baseUrl,
+      filename: isDev ? '[name].js' : '[name].[hash].js',
       path: dst(),
-
-      filename: mode === 'production'
-        ? '[name].[hash].js'
-        : '[name].js',
+      publicPath: baseUrl,
     },
 
     resolve: {
@@ -121,11 +127,13 @@ module.exports = (cliEnv, cliArgs) => {
         template: src('index.ejs'),
       }),
 
-      mode === 'development' && [
-        new HotModuleReplacementPlugin(),
+      isAnalyze && [
+        new BundleAnalyzerPlugin(),
       ],
 
-      mode === 'production' && [
+      isDev ? [
+        new HotModuleReplacementPlugin(),
+      ] : [
         new CleanWebpackPlugin(),
       ],
     ),
