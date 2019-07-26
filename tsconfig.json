@@ -5,13 +5,14 @@
       "dom",
     ],
     "module": "esnext",
-    "target": "es5",
+    "target": "esnext",
     "jsx": "react",
     "moduleResolution": "node",
     "baseUrl": "src",
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowJs": true
   }
 }

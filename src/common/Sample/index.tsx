@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import trim from 'lodash/trim';
+import { trim } from 'lodash';
 import moment from 'moment';
 
 import { Heading } from './Heading';
