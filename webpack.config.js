@@ -14,6 +14,7 @@ const MiniCssExtractLoader = MiniCssExtractPlugin.loader;
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const postcssNormalize = require('postcss-normalize');
+const CopyPlugin = require('copy-webpack-plugin');
 const { DefinePlugin, HotModuleReplacementPlugin } = require('webpack');
 
 /**
@@ -219,6 +220,7 @@ module.exports = (cliEnv, cliArgs) => {
     devtool: isDev && 'source-map',
 
     devServer: {
+      contentBase: src(),
       host: 'localhost',
       port: 8080,
       open: true,
@@ -265,6 +267,11 @@ module.exports = (cliEnv, cliArgs) => {
 
       isProd && lst(
         new CleanWebpackPlugin(),
+
+        new CopyPlugin({
+          from: src('static'),
+          to: dst('static'),
+        }),
       ),
 
       isAnalyze && lst(
