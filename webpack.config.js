@@ -101,6 +101,12 @@ module.exports = (cliEnv, cliArgs) => {
   const isProd = mode === 'production';
 
   /**
+   * Base relative URL of application.
+   */
+  const baseUrl = url();
+  env.BASE_URL = baseUrl;
+
+  /**
    * Options of the Babel JS.
    */
   const babelOptions = {
@@ -132,12 +138,6 @@ module.exports = (cliEnv, cliArgs) => {
       ),
     ),
   };
-
-  /**
-   * Base relative URL of application.
-   */
-  const baseUrl = url();
-  env.BASE_URL = baseUrl;
 
   return {
     mode,
