@@ -16,7 +16,6 @@ export const Sample: FC = () => {
     <>
       <Heading>At {time} {phrase}</Heading>
       <Text>NODE_ENV: {process.env.NODE_ENV}</Text>
-      <Text>FOO: {process.env.FOO}</Text>
     </>
   );
 };
