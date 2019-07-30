@@ -5,8 +5,13 @@ const { TsConfigPathsPlugin, CheckerPlugin } = require('awesome-typescript-loade
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const sass = require('sass');
+const Fiber = require('fibers');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const TerserPlugin  = require('terser-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractLoader = MiniCssExtractPlugin.loader;
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const { DefinePlugin, HotModuleReplacementPlugin } = require('webpack');
 
 /**
@@ -184,6 +189,11 @@ module.exports = (cliEnv, cliArgs) => {
         localesToKeep: locales,
       }),
 
+      new MiniCssExtractPlugin({
+        chunkFilename: isDev ? '[id].css' : '[id].[chunkhash].css',
+        filename: isDev ? '[name].css' : '[name].[chunkhash].css',
+      }),
+
       isProd && lst(
         new CleanWebpackPlugin(),
       ),
@@ -211,8 +221,10 @@ module.exports = (cliEnv, cliArgs) => {
             output: {
               comments: false,
             },
-          }
+          },
         }),
+
+        new OptimizeCssAssetsPlugin(),
       ],
     },
 
@@ -239,6 +251,37 @@ module.exports = (cliEnv, cliArgs) => {
             ...babelOptions,
           },
         },
+
+        {
+          test: /\.s[ac]ss$/,
+          use: [
+            isDev
+              ? {
+                loader: 'style-loader',
+                options: {
+                  sourceMap: isDev,
+                },
+              }
+              : {
+                loader: MiniCssExtractLoader,
+                options: {},
+              },
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: isDev,
+              },
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                implementation: sass,
+                fiber: Fiber,
+                sourceMap: isDev,
+              },
+            }
+          ],
+        }
       ),
     },
   };
