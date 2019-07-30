@@ -255,7 +255,7 @@ module.exports = (cliEnv, cliArgs) => {
       }),
 
       new HtmlWebpackPlugin({
-        template: src('index.ejs'),
+        template: src('index.html'),
       }),
 
       new MomentLocalesPlugin({
