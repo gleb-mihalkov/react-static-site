@@ -228,7 +228,7 @@ module.exports = (cliEnv, cliArgs) => {
     },
 
     entry: {
-      main: entry,
+      index: entry,
     },
 
     output: {
