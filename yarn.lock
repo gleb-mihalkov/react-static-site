@@ -2103,6 +2103,14 @@ css-loader@^3.1.0:
     postcss-value-parser "^4.0.0"
     schema-utils "^2.0.0"
 
+css-modules-typescript-loader@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/css-modules-typescript-loader/-/css-modules-typescript-loader-2.0.4.tgz#0ddf207097f24c4bef8dd55964dfdbe6e373e283"
+  integrity sha512-hjIjlmJ0D8MRTGoRkIdWTLbKrnTLgSKsL9QLOTsVDq9UbRWLwfEBmeNgsM/KVkVB/DTYSbmlvw7OubaeOBlnqQ==
+  dependencies:
+    line-diff "^2.0.1"
+    loader-utils "^1.2.3"
+
 css-select-base-adapter@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/css-select-base-adapter/-/css-select-base-adapter-0.1.1.tgz#3b2ff4972cc362ab88561507a95408a1432135d7"
@@ -3922,6 +3930,18 @@ lcid@^2.0.0:
   integrity sha512-avPEb8P8EGnwXKClwsNUgryVjllcRqtMYa49NTsbQagYuT1DcXnl1915oxWjoyGrXR6zH/Y0Zc96xWsPcoDKeA==
   dependencies:
     invert-kv "^2.0.0"
+
+levdist@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/levdist/-/levdist-1.0.0.tgz#91d7a3044964f2ccc421a0477cac827fe75c5718"
+  integrity sha1-kdejBElk8szEIaBHfKyCf+dcVxg=
+
+line-diff@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/line-diff/-/line-diff-2.0.1.tgz#d893ae8d81914cd65974fd57e714e730ce1e96a8"
+  integrity sha512-l+tt/aYyO+uyVyk5mzLgvoNYOkGR2iiFw5w2rWfFerfM7va0pje7n8LWdGk7Gl+Fkzw/bPZ0X9bvCBuTVLv8RA==
+  dependencies:
+    levdist "^1.0.0"
 
 loader-runner@^2.3.0:
   version "2.4.0"

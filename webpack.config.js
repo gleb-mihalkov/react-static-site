@@ -132,9 +132,9 @@ module.exports = (cliEnv, cliArgs) => {
   env.BASE_URL = baseUrl;
 
   /**
-   * Options of the Babel JS.
+   * Returns the options of the Babel JS.
    */
-  const babelOptions = {
+  const babelOptions = () => ({
     babelrc: false,
     presets: lst(
       ['@babel/preset-env', {
@@ -162,7 +162,60 @@ module.exports = (cliEnv, cliArgs) => {
         ['babel-plugin-styled-components', { pure: true }],
       ),
     ),
-  };
+  });
+
+  /**
+   * Returns the list of style loaders.
+   * @param {boolean} isModule True if this rules use css-modules.
+   */
+  const styleLoaders = (isModule = false) => lst(
+    isDev
+      ? {
+        loader: 'style-loader',
+        options: {
+          sourceMap: isDev,
+        },
+      }
+      : {
+        loader: MiniCssExtractLoader,
+        options: {},
+      },
+    isModule && {
+      loader: 'css-modules-typescript-loader',
+      options: {},
+    },
+    {
+      loader: 'css-loader',
+      options: {
+        sourceMap: isDev,
+        modules: isModule && {
+          localIdentName: isDev ? '[name]_[local]' : '[hash:base64]',
+        },
+      },
+    },
+    {
+      loader: 'postcss-loader',
+      options: {
+        sourceMap: isDev,
+        plugins: [
+          autoprefixer({
+            overrideBrowserslist: browserlist,
+          }),
+          postcssNormalize({
+            browsers: browserlist,
+          }),
+        ],
+      },
+    },
+    {
+      loader: 'sass-loader',
+      options: {
+        implementation: sass,
+        fiber: Fiber,
+        sourceMap: isDev,
+      },
+    },
+  );
 
   return {
     mode,
@@ -259,7 +312,7 @@ module.exports = (cliEnv, cliArgs) => {
             useCache: true,
             useBabel: true,
             babelCore: '@babel/core',
-            babelOptions: { ...babelOptions },
+            babelOptions: { ...babelOptions() },
           },
         },
 
@@ -268,53 +321,18 @@ module.exports = (cliEnv, cliArgs) => {
           loader: 'babel-loader',
           options: {
             cacheDirectory: root('node_modules/.cache/babel-loader'),
-            ...babelOptions,
+            ...babelOptions(),
           },
         },
 
         {
+          test: /\.module\.(s[ac]|c)ss$/,
+          use: styleLoaders(true),
+        },
+        {
           test: /\.(s[ac]|c)ss$/,
-          use: [
-            isDev
-              ? {
-                loader: 'style-loader',
-                options: {
-                  sourceMap: isDev,
-                },
-              }
-              : {
-                loader: MiniCssExtractLoader,
-                options: {},
-              },
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: isDev,
-              },
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                sourceMap: isDev,
-                plugins: [
-                  autoprefixer({
-                    overrideBrowserslist: browserlist,
-                  }),
-                  postcssNormalize({
-                    browsers: browserlist,
-                  }),
-                ],
-              },
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                implementation: sass,
-                fiber: Fiber,
-                sourceMap: isDev,
-              },
-            },
-          ],
+          exclude: /\.module\.(s[ac]|c)ss$/,
+          use: styleLoaders(),
         },
 
         {
@@ -324,7 +342,6 @@ module.exports = (cliEnv, cliArgs) => {
             outputPath: ast(),
           },
         },
-
         {
           test: /\.(png|gif|jpe?g|svg)$/i,
           use: lst(

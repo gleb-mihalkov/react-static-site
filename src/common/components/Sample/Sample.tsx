@@ -2,8 +2,7 @@ import React, { FC } from 'react';
 import { trim } from 'lodash';
 import moment from 'moment';
 
-import { Heading } from './Heading';
-import { Text } from './Text';
+import style from './Sample.module.scss';
 
 /**
  * Sample React component.
@@ -13,9 +12,9 @@ export const Sample: FC = () => {
   const time = moment().format('HH:mm:ss');
 
   return (
-    <>
-      <Heading>At {time} {phrase}</Heading>
-      <Text>NODE_ENV: {process.env.NODE_ENV}</Text>
-    </>
+    <div className={style.root}>
+      <h1 className={style.heading}>At {time} {phrase}</h1>
+      <p className={style.text}>NODE_ENV: {process.env.NODE_ENV}</p>
+    </div>
   );
 };
