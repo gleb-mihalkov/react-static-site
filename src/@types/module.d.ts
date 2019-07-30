@@ -1,17 +1,23 @@
 /**
+ * Collection of the classnames.
+ */
+interface CssExport { [name: string]: string }
+
+/**
  * This module exists as fallback for css-modules-typescript-loader.
  * @see https://github.com/seek-oss/css-modules-typescript-loader
  */
 declare module '*.module.scss' {
-  /**
-   * Collection of the classnames.
-   */
-  interface DefaultCssExport { [name: string]: string }
+  const value: CssExport;
+  export = value;
+}
 
-  /**
-   * Collection of the classnames.
-   */
-  const value: DefaultCssExport;
+/**
+ * This module exists as fallback for css-modules-typescript-loader.
+ * @see https://github.com/seek-oss/css-modules-typescript-loader
+ */
+declare module '*.module.css' {
+  const value: CssExport;
   export = value;
 }
 
