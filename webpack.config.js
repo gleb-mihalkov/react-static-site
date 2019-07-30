@@ -1,5 +1,6 @@
 const { resolve } = require('path');
 const { existsSync } = require('fs');
+const dotenv = require('dotenv');
 const { TsConfigPathsPlugin, CheckerPlugin } = require('awesome-typescript-loader');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -49,9 +50,14 @@ const lst = (...args) => {
  */
 module.exports = (cliEnv, cliArgs) => {
   /**
+   * Environment variables from the file.
+   */
+  const fileEnv = dotenv.config({ path: root('.env') }).parsed;
+
+  /**
    * Real collection of environment variables.
    */
-  const env = { ...process.env, ...cliEnv };
+  const env = { ...fileEnv, ...process.env, ...cliEnv };
 
   /**
    * Opertaion mode: 'development' or 'production';
