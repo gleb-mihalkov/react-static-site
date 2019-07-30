@@ -12,6 +12,8 @@ const TerserPlugin  = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const MiniCssExtractLoader = MiniCssExtractPlugin.loader;
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const autoprefixer = require('autoprefixer');
+const postcssNormalize = require('postcss-normalize');
 const { DefinePlugin, HotModuleReplacementPlugin } = require('webpack');
 
 /**
@@ -83,7 +85,12 @@ module.exports = (cliEnv, cliArgs) => {
   /**
    * List of browsers on which the build should works.
    */
-  const browserlist = '> 1%, last 2 versions, maintained node versions, not dead';
+  const browserlist = [
+    '> 1%',
+    'last 2 versions',
+    'maintained node versions',
+    'not dead',
+  ];
 
   /**
    * Entry point of application.
@@ -253,7 +260,7 @@ module.exports = (cliEnv, cliArgs) => {
         },
 
         {
-          test: /\.s[ac]ss$/,
+          test: /\.(s[ac]|c)ss$/,
           use: [
             isDev
               ? {
@@ -273,13 +280,27 @@ module.exports = (cliEnv, cliArgs) => {
               },
             },
             {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap: isDev,
+                plugins: [
+                  autoprefixer({
+                    overrideBrowserslist: browserlist,
+                  }),
+                  postcssNormalize({
+                    browsers: browserlist,
+                  }),
+                ],
+              },
+            },
+            {
               loader: 'sass-loader',
               options: {
                 implementation: sass,
                 fiber: Fiber,
                 sourceMap: isDev,
               },
-            }
+            },
           ],
         }
       ),
