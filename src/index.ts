@@ -1,9 +1,5 @@
-import { createElement } from 'react';
-import { render } from 'react-dom';
+import { renderComponent } from 'common';
 
-import { Sample } from 'common';
+import { App } from 'app';
 
-render(
-  createElement(Sample),
-  document.getElementById('root'),
-);
+renderComponent(App, {});
