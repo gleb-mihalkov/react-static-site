@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 
+import { GlobalFonts } from './GlobalFonts';
 import { GlobalStyle } from './GlobalStyle';
 
 import { Sample } from 'common';
@@ -9,6 +10,7 @@ import { Sample } from 'common';
  */
 export const App: FC = () => (
   <>
+    <GlobalFonts />
     <GlobalStyle />
     <Sample />
   </>
