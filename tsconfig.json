@@ -4,6 +4,10 @@
       "esnext",
       "dom",
     ],
+    "typeRoots": [
+      "node_modules/@types",
+      "src/@types"
+    ],
     "module": "esnext",
     "target": "esnext",
     "jsx": "react",

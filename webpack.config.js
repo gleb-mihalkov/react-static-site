@@ -180,7 +180,7 @@ module.exports = (cliEnv, cliArgs) => {
         loader: MiniCssExtractLoader,
         options: {},
       },
-    isModule && {
+    isModule && isDev && {
       loader: 'css-modules-typescript-loader',
       options: {},
     },
