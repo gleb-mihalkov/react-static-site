@@ -268,10 +268,10 @@ module.exports = (cliEnv, cliArgs) => {
       isProd && lst(
         new CleanWebpackPlugin(),
 
-        new CopyPlugin({
+        new CopyPlugin([{
           from: src('static'),
           to: dst('static'),
-        }),
+        }]),
       ),
 
       isAnalyze && lst(
