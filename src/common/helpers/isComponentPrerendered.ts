@@ -3,6 +3,6 @@
  * @todo Implement.
  * @param rootNode Mounting point of the application.
  */
-export const isReactPrerendered = (rootNode: HTMLElement) => {
+export const isComponentPrerendered = (rootNode: HTMLElement) => {
   return false;
 };

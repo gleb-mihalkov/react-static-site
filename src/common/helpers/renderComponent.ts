@@ -1,7 +1,7 @@
 import { createElement, ComponentType } from 'react';
 import { render, hydrate } from 'react-dom';
 
-import { isReactPrerendered } from './isReactPrerendered';
+import { isComponentPrerendered } from './isComponentPrerendered';
 
 /**
  * Renders the component into DOM with specified properties.
@@ -13,7 +13,7 @@ export const renderComponent = <Props>(component: ComponentType<Props>, props: P
     const element = createElement(component, props);
     const node = document.getElementById('root');
 
-    if (isReactPrerendered(node)) {
+    if (isComponentPrerendered(node)) {
       hydrate(element, node, resolve);
       return;
     }
