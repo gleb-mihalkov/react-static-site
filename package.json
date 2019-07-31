@@ -47,6 +47,7 @@
     "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
+    "@types/classnames": "^2.2.9",
     "@types/lodash": "^4.14.136",
     "@types/moment": "^2.13.0",
     "@types/react": "^16.8.23",
@@ -55,6 +56,7 @@
     "@types/react-router-dom": "^4.3.4",
     "@types/react-transition-group": "^4.2.0",
     "@types/styled-components": "^4.1.18",
+    "classnames": "^2.2.6",
     "core-js": "3",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
