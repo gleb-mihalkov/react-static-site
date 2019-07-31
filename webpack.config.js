@@ -15,6 +15,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const postcssNormalize = require('postcss-normalize');
 const CopyPlugin = require('copy-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const { DefinePlugin, HotModuleReplacementPlugin } = require('webpack');
 
 /**
@@ -272,6 +273,10 @@ module.exports = (cliEnv, cliArgs) => {
           from: src('static'),
           to: dst('static'),
         }]),
+
+        new CompressionPlugin({
+          cache: true,
+        }),
       ),
 
       isAnalyze && lst(
