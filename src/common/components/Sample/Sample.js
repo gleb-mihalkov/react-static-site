@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { trim } from 'lodash';
 import moment from 'moment';
 
@@ -7,7 +7,7 @@ import style from './Sample.scss';
 /**
  * Sample React component.
  */
-export const Sample: FC = () => {
+export const Sample = () => {
   const phrase = trim('it works!');
   const time = moment().format('HH:mm:ss');
 

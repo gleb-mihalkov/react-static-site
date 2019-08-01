@@ -133,39 +133,6 @@ module.exports = (cliEnv, cliArgs) => {
   const baseUrl = url();
   env.BASE_URL = baseUrl;
 
-  /**
-   * Returns the options of the Babel JS.
-   */
-  const babelOptions = () => ({
-    babelrc: false,
-    presets: lst(
-      ['@babel/preset-env', {
-        targets: browserlist,
-        useBuiltIns: 'entry',
-        loose: true,
-        corejs: {
-          proposals: true,
-          version: 3,
-        },
-      }],
-
-      ['@babel/preset-react', {
-        development: isDev,
-      }],
-    ),
-    plugins: lst(
-      'babel-plugin-lodash',
-
-      isProd && lst(
-        '@babel/plugin-transform-react-constant-elements',
-      ),
-
-      isDev && lst(
-        ['babel-plugin-styled-components', { pure: true }],
-      ),
-    ),
-  });
-
   return {
     mode,
 
@@ -263,7 +230,7 @@ module.exports = (cliEnv, cliArgs) => {
     module: {
       rules: lst(
         {
-          test: /\.tsx?$/,
+          test: /\.[tj]sx?$/,
           loader: 'awesome-typescript-loader',
           options: {
             cacheDirectory: root('node_modules/.cache/awesome-typescript-loader'),
@@ -271,16 +238,35 @@ module.exports = (cliEnv, cliArgs) => {
             useCache: true,
             useBabel: true,
             babelCore: '@babel/core',
-            babelOptions: { ...babelOptions() },
-          },
-        },
-
-        {
-          test: /\.jsx?$/,
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: root('node_modules/.cache/babel-loader'),
-            ...babelOptions(),
+            babelOptions: {
+              babelrc: false,
+              presets: lst(
+                ['@babel/preset-env', {
+                  targets: browserlist,
+                  useBuiltIns: 'entry',
+                  loose: true,
+                  corejs: {
+                    proposals: true,
+                    version: 3,
+                  },
+                }],
+          
+                ['@babel/preset-react', {
+                  development: isDev,
+                }],
+              ),
+              plugins: lst(
+                'babel-plugin-lodash',
+          
+                isProd && lst(
+                  '@babel/plugin-transform-react-constant-elements',
+                ),
+          
+                isDev && lst(
+                  ['babel-plugin-styled-components', { pure: true }],
+                ),
+              ),
+            },
           },
         },
 
