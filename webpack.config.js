@@ -57,13 +57,12 @@ const url = (...args) => `/${rel(root, ...args)}`;
 
 /**
  * Returns the flatten not empty list of arguments.
- * @param  {...any} args List of items.
+ * @param {*[]} items List of items.
  */
-const lst = (...args) => {
-  const items = args.filter(Boolean).reduce((r, i) => [...r, ...(i._lst ? lst(...i) : [i])], []);
-  items._lst = true;
-  return items;
-};
+const lst = (items) => Object.assign(
+  items.filter(Boolean).reduce((r, i) => [...r, ...(i._lst ? lst(i) : [i])], []),
+  { _lst: true },
+);
 
 /**
  * Returns webpack configuration object.
@@ -159,12 +158,12 @@ module.exports = (cliEnv, cliArgs) => {
     resolve: {
       extensions,
 
-      plugins: lst(
+      plugins: lst([
         new TsConfigPathsPlugin(),
-      ),
+      ]),
     },
 
-    plugins: lst(
+    plugins: lst([
       new CheckerPlugin(),
 
       new DefinePlugin({
@@ -184,7 +183,7 @@ module.exports = (cliEnv, cliArgs) => {
         filename: isDev ? '[name].css' : '[name].[chunkhash].css',
       }),
 
-      isProd && lst(
+      isProd && lst([
         new CleanWebpackPlugin(),
 
         new CopyPlugin([{
@@ -195,16 +194,16 @@ module.exports = (cliEnv, cliArgs) => {
         new CompressionPlugin({
           cache: true,
         }),
-      ),
+      ]),
 
-      isAnalyze && lst(
+      isAnalyze && lst([
         new BundleAnalyzerPlugin(),
-      ),
+      ]),
 
-      isDev && lst(
+      isDev && lst([
         new HotModuleReplacementPlugin(),
-      ),
-    ),
+      ]),
+    ]),
 
     optimization: {
       splitChunks: {
@@ -212,7 +211,7 @@ module.exports = (cliEnv, cliArgs) => {
         chunks: 'all',
       },
 
-      minimizer: lst(
+      minimizer: lst([
         new OptimizeCssAssetsPlugin(),
 
         new TerserPlugin({
@@ -224,11 +223,11 @@ module.exports = (cliEnv, cliArgs) => {
             },
           },
         }),
-      ),
+      ]),
     },
 
     module: {
-      rules: lst(
+      rules: lst([
         {
           test: /\.[tj]sx?$/,
           loader: 'awesome-typescript-loader',
@@ -240,7 +239,7 @@ module.exports = (cliEnv, cliArgs) => {
             babelCore: '@babel/core',
             babelOptions: {
               babelrc: false,
-              presets: lst(
+              presets: lst([
                 ['@babel/preset-env', {
                   targets: browserlist,
                   useBuiltIns: 'entry',
@@ -254,25 +253,25 @@ module.exports = (cliEnv, cliArgs) => {
                 ['@babel/preset-react', {
                   development: isDev,
                 }],
-              ),
-              plugins: lst(
+              ]),
+              plugins: lst([
                 'babel-plugin-lodash',
           
-                isProd && lst(
+                isProd && lst([
                   '@babel/plugin-transform-react-constant-elements',
-                ),
+                ]),
           
-                isDev && lst(
+                isDev && lst([
                   ['babel-plugin-styled-components', { pure: true }],
-                ),
-              ),
+                ]),
+              ]),
             },
           },
         },
 
         {
           test: /\.(s[ac]|c)ss$/,
-          use: lst(
+          use: lst([
             isDev
               ? {
                 loader: 'style-loader',
@@ -315,7 +314,7 @@ module.exports = (cliEnv, cliArgs) => {
                 sourceMap: isDev,
               },
             },
-          ),
+          ]),
         },
 
         {
@@ -327,7 +326,7 @@ module.exports = (cliEnv, cliArgs) => {
         },
         {
           test: /\.(png|gif|jpe?g|svg)$/i,
-          use: lst(
+          use: lst([
             {
               loader: 'url-loader',
               options: {
@@ -336,9 +335,9 @@ module.exports = (cliEnv, cliArgs) => {
                 limit: 1024 * 2,
               },
             },
-          ),
+          ]),
         },
-      ),
+      ]),
     },
   };
 };
