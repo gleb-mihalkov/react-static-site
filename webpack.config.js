@@ -312,6 +312,7 @@ module.exports = (cliEnv, cliArgs) => {
                 implementation: sass,
                 fiber: Fiber,
                 sourceMap: isDev,
+                includePaths: [ src() ],
               },
             },
           ]),
