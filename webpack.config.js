@@ -166,55 +166,6 @@ module.exports = (cliEnv, cliArgs) => {
     ),
   });
 
-  /**
-   * Returns the list of style loaders.
-   * @param {boolean} isModule True if this rules use css-modules.
-   */
-  const styleLoaders = (isModule = false) => lst(
-    isDev
-      ? {
-        loader: 'style-loader',
-        options: {
-          sourceMap: isDev,
-        },
-      }
-      : {
-        loader: MiniCssExtractLoader,
-        options: {},
-      },
-    {
-      loader: 'css-loader',
-      options: {
-        sourceMap: isDev,
-        modules: isModule && {
-          localIdentName: isDev ? '[name]_[local]' : '[hash:base64]',
-        },
-      },
-    },
-    {
-      loader: 'postcss-loader',
-      options: {
-        sourceMap: isDev,
-        plugins: [
-          autoprefixer({
-            overrideBrowserslist: browserlist,
-          }),
-          postcssNormalize({
-            browsers: browserlist,
-          }),
-        ],
-      },
-    },
-    {
-      loader: 'sass-loader',
-      options: {
-        implementation: sass,
-        fiber: Fiber,
-        sourceMap: isDev,
-      },
-    },
-  );
-
   return {
     mode,
 
@@ -334,13 +285,51 @@ module.exports = (cliEnv, cliArgs) => {
         },
 
         {
-          test: /\.module\.(s[ac]|c)ss$/,
-          use: styleLoaders(true),
-        },
-        {
           test: /\.(s[ac]|c)ss$/,
-          exclude: /\.module\.(s[ac]|c)ss$/,
-          use: styleLoaders(),
+          use: lst(
+            isDev
+              ? {
+                loader: 'style-loader',
+                options: {
+                  sourceMap: isDev,
+                },
+              }
+              : {
+                loader: MiniCssExtractLoader,
+                options: {},
+              },
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: isDev,
+                modules: {
+                  localIdentName: isDev ? '[name]_[local]' : '[hash:base64]',
+                },
+              },
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap: isDev,
+                plugins: [
+                  autoprefixer({
+                    overrideBrowserslist: browserlist,
+                  }),
+                  postcssNormalize({
+                    browsers: browserlist,
+                  }),
+                ],
+              },
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                implementation: sass,
+                fiber: Fiber,
+                sourceMap: isDev,
+              },
+            },
+          ),
         },
 
         {

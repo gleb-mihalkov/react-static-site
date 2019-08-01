@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { trim } from 'lodash';
 import moment from 'moment';
 
-import style from './Sample.module.scss';
+import style from './Sample.scss';
 
 /**
  * Sample React component.
