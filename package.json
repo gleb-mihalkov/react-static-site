@@ -14,6 +14,7 @@
     "@babel/core": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-transform-react-constant-elements": "^7.5.0",
+    "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "autoprefixer": "^9.6.1",
@@ -47,6 +48,7 @@
     "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
+    "@babel/runtime-corejs3": "^7.5.5",
     "@types/classnames": "^2.2.9",
     "@types/lodash": "^4.14.136",
     "@types/moment": "^2.13.0",

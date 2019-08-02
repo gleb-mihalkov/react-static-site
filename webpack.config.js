@@ -255,7 +255,11 @@ module.exports = (cliEnv, cliArgs) => {
                 }],
               ]),
               plugins: lst([
-                'babel-plugin-lodash',
+                ['@babel/plugin-transform-runtime', {
+                  corejs: 3,
+                }],
+
+                ['babel-plugin-lodash', {}],
           
                 isProd && lst([
                   '@babel/plugin-transform-react-constant-elements',
