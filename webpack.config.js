@@ -16,6 +16,7 @@ const autoprefixer = require('autoprefixer');
 const postcssNormalize = require('postcss-normalize');
 const CopyPlugin = require('copy-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const HardSourcePlugin = require('hard-source-webpack-plugin');
 const { DefinePlugin, HotModuleReplacementPlugin } = require('webpack');
 
 /**
@@ -182,6 +183,8 @@ module.exports = (cliEnv, cliArgs) => {
         chunkFilename: isDev ? '[id].css' : '[id].[chunkhash].css',
         filename: isDev ? '[name].css' : '[name].[chunkhash].css',
       }),
+
+      new HardSourcePlugin(),
 
       isProd && lst([
         new CleanWebpackPlugin(),
