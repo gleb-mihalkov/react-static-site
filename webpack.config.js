@@ -242,12 +242,7 @@ module.exports = (cliEnv, cliArgs) => {
               presets: lst([
                 ['@babel/preset-env', {
                   targets: browserlist,
-                  useBuiltIns: 'entry',
                   loose: true,
-                  corejs: {
-                    proposals: true,
-                    version: 3,
-                  },
                 }],
           
                 ['@babel/preset-react', {
@@ -255,9 +250,7 @@ module.exports = (cliEnv, cliArgs) => {
                 }],
               ]),
               plugins: lst([
-                ['@babel/plugin-transform-runtime', {
-                  corejs: 3,
-                }],
+                ['@babel/plugin-transform-runtime'],
 
                 ['babel-plugin-lodash', {}],
           
