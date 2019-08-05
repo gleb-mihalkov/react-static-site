@@ -95,7 +95,8 @@ module.exports = (cliEnv, cliArgs) => {
   /**
    * Avalible locales of the project.
    */
-  const locales = ['ru'];
+  const locale = 'ru';
+  env.LOCALE = locale;
 
   /**
    * List of browsers on which the build should works.
@@ -127,12 +128,6 @@ module.exports = (cliEnv, cliArgs) => {
    */
   const isProd = mode === 'production';
 
-  /**
-   * Base relative URL of application.
-   */
-  const baseUrl = url();
-  env.BASE_URL = baseUrl;
-
   return {
     mode,
 
@@ -153,7 +148,7 @@ module.exports = (cliEnv, cliArgs) => {
     output: {
       filename: isProd ? '[name].[chunkhash].js' : '[name].js',
       path: dst(),
-      publicPath: baseUrl,
+      publicPath: url(),
     },
 
     resolve: {
@@ -173,10 +168,12 @@ module.exports = (cliEnv, cliArgs) => {
 
       new HtmlWebpackPlugin({
         template: src('index.html'),
+        base: url(),
+        favicon: src('favicon.ico'),
       }),
 
       new MomentLocalesPlugin({
-        localesToKeep: locales,
+        localesToKeep: [locale],
       }),
 
       new MiniCssExtractPlugin({
