@@ -1,4 +1,6 @@
 @import 'common/constants/colors';
+@import 'common/constants/fonts';
+@import 'common/constants/text';
 
 * {
   &:before,
@@ -25,7 +27,10 @@ body {
 }
 
 body {
+  font-family: $font;
   color: $colorBlack;
+  font-size: $textSize;
+  line-height: $textLine;
 }
 
 #root {
