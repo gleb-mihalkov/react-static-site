@@ -1,4 +1,4 @@
-const { resolve } = require('path');
+const { resolve, join } = require('path');
 const { existsSync } = require('fs');
 const dotenv = require('dotenv');
 const { TsConfigPathsPlugin, CheckerPlugin } = require('awesome-typescript-loader');
@@ -38,16 +38,16 @@ const src = (...args) => root('src', ...args);
 const dst = (...args) => root('build', ...args);
 
 /**
- * Resolves the path by assets directory.
- * @param  {...any} args Components of the path.
- */
-const ast = (...args) => dst('assets', ...args).substr(dst().length).replace(/^\//, '');
-
-/**
  * Resolves the path by base URL pathname.
  * @param  {...any} args Components of the path.
  */
-const url = (...args) => `/${dst(...args).substr(dst().length)}`.replace(/\/$/, '') || '/';
+const url = (...args) => join('/', ...args);
+
+/**
+ * Resolves the path by assets directory.
+ * @param  {...any} args Components of the path.
+ */
+const ast = (...args) => url('assets', ...args).replace(/^\//, '');
 
 /**
  * Returns the flatten not empty list of arguments.
