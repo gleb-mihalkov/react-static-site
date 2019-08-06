@@ -14,10 +14,16 @@
     "moduleResolution": "node",
     "baseUrl": "src",
     "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "allowJs": true
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "locale": "ru"
   },
   "include": ["src/**/*"]
 }

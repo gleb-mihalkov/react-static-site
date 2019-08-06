@@ -4,5 +4,5 @@
  */
 export const isComponentPrerendered = (rootNode: HTMLElement) => {
   const isElementNode = (node: ChildNode) => node.nodeType === Node.ELEMENT_NODE;
-  return Array.prototype.some.call(rootNode.childNodes, isElementNode);
+  return Array.prototype.some.call(rootNode.childNodes, isElementNode) as boolean;
 };

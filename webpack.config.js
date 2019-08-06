@@ -8,7 +8,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const sass = require('sass');
 const Fiber = require('fibers');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
-const TerserPlugin  = require('terser-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const MiniCssExtractLoader = MiniCssExtractPlugin.loader;
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -50,13 +50,19 @@ const url = (...args) => join('/', ...args);
 const ast = (...args) => url('assets', ...args).replace(/^\//, '');
 
 /**
+ * Resolves the path by cache directory.
+ * @param  {...any} args Components of the path.
+ */
+const cache = (...args) => root('node_modules/.cache', ...args);
+
+/**
  * Returns the flatten not empty list of arguments.
  * @param {*[]} items List of items.
  */
-const lst = (items) => Object.assign(
-  items.filter(Boolean).reduce((r, i) => [...r, ...(i._lst ? lst(i) : [i])], []),
-  { _lst: true },
-);
+const lst = (items) =>
+  Object.assign(items.filter(Boolean).reduce((r, i) => [...r, ...(i._lst ? lst(i) : [i])], []), {
+    _lst: true,
+  });
 
 /**
  * Returns webpack configuration object.
@@ -95,17 +101,12 @@ module.exports = (cliEnv, cliArgs) => {
   /**
    * List of supported browsers.
    */
-  const browserlist = [
-    '> 1%',
-    'last 2 versions',
-    'maintained node versions',
-    'not dead',
-  ];
+  const browserlist = ['> 1%', 'last 2 versions', 'maintained node versions', 'not dead'];
 
   /**
    * Entry point of application.
    */
-  const entry = extensions.map(item => src(`index${item}`)).find(existsSync);
+  const entry = extensions.map((item) => src(`index${item}`)).find(existsSync);
 
   /**
    * True if webpack works in bundle analyze mode.
@@ -148,9 +149,7 @@ module.exports = (cliEnv, cliArgs) => {
     resolve: {
       extensions,
 
-      plugins: lst([
-        new TsConfigPathsPlugin(),
-      ]),
+      plugins: lst([new TsConfigPathsPlugin()]),
     },
 
     plugins: lst([
@@ -177,26 +176,25 @@ module.exports = (cliEnv, cliArgs) => {
 
       new HardSourcePlugin(),
 
-      isProd && lst([
-        new CleanWebpackPlugin(),
+      isProd &&
+        lst([
+          new CleanWebpackPlugin(),
 
-        new CopyPlugin([{
-          from: src('static'),
-          to: dst('static'),
-        }]),
+          new CopyPlugin([
+            {
+              from: src('static'),
+              to: dst('static'),
+            },
+          ]),
 
-        new CompressionPlugin({
-          cache: true,
-        }),
-      ]),
+          new CompressionPlugin({
+            cache: true,
+          }),
+        ]),
 
-      isAnalyze && lst([
-        new BundleAnalyzerPlugin(),
-      ]),
+      isAnalyze && lst([new BundleAnalyzerPlugin()]),
 
-      isDev && lst([
-        new HotModuleReplacementPlugin(),
-      ]),
+      isDev && lst([new HotModuleReplacementPlugin()]),
     ]),
 
     optimization: {
@@ -224,40 +222,57 @@ module.exports = (cliEnv, cliArgs) => {
       rules: lst([
         {
           test: /\.[tj]sx?$/,
-          loader: 'awesome-typescript-loader',
-          options: {
-            cacheDirectory: root('node_modules/.cache/awesome-typescript-loader'),
-            useTranspileModule: true,
-            useCache: true,
-            useBabel: true,
-            babelCore: '@babel/core',
-            babelOptions: {
-              babelrc: false,
-              presets: lst([
-                ['@babel/preset-env', {
-                  targets: browserlist,
-                  loose: true,
-                }],
-          
-                ['@babel/preset-react', {
-                  development: isDev,
-                }],
-              ]),
-              plugins: lst([
-                ['@babel/plugin-transform-runtime'],
+          use: lst([
+            {
+              loader: 'awesome-typescript-loader',
+              options: {
+                cacheDirectory: cache('awesome-typescript-loader'),
+                useTranspileModule: true,
+                useCache: true,
+                useBabel: true,
+                babelCore: '@babel/core',
+                babelOptions: {
+                  babelrc: false,
+                  presets: lst([
+                    [
+                      '@babel/preset-env',
+                      {
+                        targets: browserlist,
+                        loose: true,
+                      },
+                    ],
 
-                ['babel-plugin-lodash', {}],
-          
-                isProd && lst([
-                  '@babel/plugin-transform-react-constant-elements',
-                ]),
-          
-                isDev && lst([
-                  ['babel-plugin-styled-components', { pure: true }],
-                ]),
-              ]),
+                    [
+                      '@babel/preset-react',
+                      {
+                        development: isDev,
+                      },
+                    ],
+                  ]),
+                  plugins: lst([
+                    ['@babel/plugin-transform-runtime'],
+
+                    ['babel-plugin-lodash', {}],
+
+                    isProd && lst(['@babel/plugin-transform-react-constant-elements']),
+
+                    isDev && lst([['babel-plugin-styled-components', { pure: true }]]),
+                  ]),
+                },
+              },
             },
-          },
+            {
+              loader: 'eslint-loader',
+              options: {
+                configFile: root('.eslintrc'),
+                cache: cache('eslint-loader'),
+                failOnWarning: true,
+                failOnError: true,
+                emitWarning: true,
+                fix: true,
+              },
+            },
+          ]),
         },
 
         {
@@ -265,15 +280,15 @@ module.exports = (cliEnv, cliArgs) => {
           use: lst([
             isDev
               ? {
-                loader: 'style-loader',
-                options: {
-                  sourceMap: isDev,
-                },
-              }
+                  loader: 'style-loader',
+                  options: {
+                    sourceMap: isDev,
+                  },
+                }
               : {
-                loader: MiniCssExtractLoader,
-                options: {},
-              },
+                  loader: MiniCssExtractLoader,
+                  options: {},
+                },
             {
               loader: 'css-loader',
               options: {
@@ -303,7 +318,7 @@ module.exports = (cliEnv, cliArgs) => {
                 implementation: sass,
                 fiber: Fiber,
                 sourceMap: isDev,
-                includePaths: [ src() ],
+                includePaths: [src()],
               },
             },
           ]),
@@ -333,4 +348,3 @@ module.exports = (cliEnv, cliArgs) => {
     },
   };
 };
-

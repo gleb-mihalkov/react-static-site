@@ -9,7 +9,7 @@ import { isComponentPrerendered } from './isComponentPrerendered';
  * @param props The properties.
  */
 export const renderComponent = <Props>(component: ComponentType<Props>, props: Props) =>
-  new Promise((resolve) => {
+  new Promise<void>((resolve) => {
     const element = createElement(component, props);
     const node = document.getElementById('root');
 

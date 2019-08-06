@@ -10,7 +10,8 @@
     "build": "webpack --mode=production",
     "start": "webpack-dev-server --mode=development",
     "postbuild": "react-snap",
-    "server": "cd ./build && http-server -gos"
+    "server": "cd ./build && http-server -gos",
+    "clean-cache": "rimraf ./node_modules/.cache"
   },
   "reactSnap": {
     "puppeteerArgs": [
@@ -25,6 +26,8 @@
     "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
     "autoprefixer": "^9.6.1",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.6",
@@ -36,6 +39,11 @@
     "cross-env": "^5.2.0",
     "css-loader": "^3.1.0",
     "dotenv": "^8.0.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-loader": "^2.2.1",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
     "fibers": "^4.0.1",
     "file-loader": "^4.1.0",
     "hard-source-webpack-plugin": "^0.13.1",
@@ -46,7 +54,9 @@
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
     "postcss-normalize": "^8.0.1",
+    "prettier": "^1.18.2",
     "react-snap": "^1.23.0",
+    "rimraf": "^2.6.3",
     "sass": "^1.22.9",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
