@@ -6,9 +6,9 @@
   "author": "gleb.mihalkov",
   "license": "MIT",
   "scripts": {
-    "analyze": "cross-env NODE_ENV=production webpack --analyze",
-    "build": "cross-env NODE_ENV=production webpack",
-    "start": "cross-env NODE_ENV=development webpack-dev-server",
+    "analyze": "webpack --mode=production --analyze",
+    "build": "webpack --mode=production",
+    "start": "webpack-dev-server --mode=development",
     "postbuild": "react-snap",
     "server": "cd ./build && http-server -gos"
   },
